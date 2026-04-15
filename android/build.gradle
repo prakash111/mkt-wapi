@@ -1,29 +1,69 @@
-buildscript {
-    ext {
-        buildToolsVersion = "35.0.0"
-        minSdkVersion = 24
-        compileSdkVersion = 35
-        targetSdkVersion = 35
-        ndkVersion = "27.1.12297006"
-        kotlinVersion = "2.0.21"
+apply plugin: "com.android.application"
+apply plugin: "org.jetbrains.kotlin.android"
+apply plugin: "com.facebook.react"
+apply plugin: "com.google.gms.google-services"
+
+react {
+    autolinkLibrariesWithApp()
+}
+
+def enableProguardInReleaseBuilds = true
+def cmKeystorePath = System.getenv("CM_KEYSTORE_PATH")
+def cmKeystorePassword = System.getenv("CM_KEYSTORE_PASSWORD")
+def cmKeyAlias = System.getenv("CM_KEY_ALIAS")
+def cmKeyPassword = System.getenv("CM_KEY_PASSWORD")
+def hasReleaseSigning = cmKeystorePath && cmKeystorePassword && cmKeyAlias && cmKeyPassword
+def isCiBuild = System.getenv("CI") != null
+
+android {
+    namespace "com.wapimobilenative"
+    ndkVersion rootProject.ext.ndkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        applicationId "com.wapimobilenative"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0.0"
     }
-    repositories {
-        google()
-        mavenCentral()
+
+    signingConfigs {
+        debug {
+            storeFile file("debug.keystore")
+            storePassword "android"
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+        }
+        if (hasReleaseSigning) {
+            release {
+                storeFile file(cmKeystorePath)
+                storePassword cmKeystorePassword
+                keyAlias cmKeyAlias
+                keyPassword cmKeyPassword
+            }
+        }
     }
-    dependencies {
-        classpath("com.android.tools.build:gradle:8.7.2")
-        classpath("com.facebook.react:react-native-gradle-plugin")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
-        classpath("com.google.gms:google-services:4.4.2")
+
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
+        release {
+            if (isCiBuild && !hasReleaseSigning) {
+                throw new GradleException("CI release build requires CM_KEYSTORE_PATH, CM_KEYSTORE_PASSWORD, CM_KEY_ALIAS, and CM_KEY_PASSWORD.")
+            }
+            signingConfig hasReleaseSigning ? signingConfigs.release : signingConfigs.debug
+            minifyEnabled enableProguardInReleaseBuilds
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+        }
     }
 }
 
-allprojects {
-    repositories {
-        mavenCentral()
-        google()
+dependencies {
+    implementation("com.facebook.react:react-android")
+    if (hermesEnabled.toBoolean()) {
+        implementation("com.facebook.react:hermes-android")
     }
 }
-
-apply plugin: "com.facebook.react.rootproject"
