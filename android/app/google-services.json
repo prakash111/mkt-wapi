@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "930626424367",
+    "project_id": "max-bulksender",
+    "storage_bucket": "max-bulksender.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:930626424367:android:638b52b770cda440c840da",
+        "android_client_info": {
+          "package_name": "com.fushysystems.max_bulksender"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvt5daaVgNa33gRm5liUzSsb_kY5oCUx4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:930626424367:android:0852ae74c0b25b6dc840da",
+        "android_client_info": {
+          "package_name": "com.wapimobilenative"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvt5daaVgNa33gRm5liUzSsb_kY5oCUx4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

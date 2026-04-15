@@ -1,0 +1,33 @@
+{
+  "high_priority_chat": {
+    "message": {
+      "token": "FCM_DEVICE_TOKEN",
+      "data": {
+        "type": "chat",
+        "title": "New WhatsApp message",
+        "body": "Customer replied: Need price details",
+        "screen": "ChatThread",
+        "contactId": "CONTACT_ID",
+        "contactName": "Rahul Sharma",
+        "whatsappPhoneNumberId": "PHONE_ID"
+      },
+      "android": {
+        "priority": "high"
+      }
+    }
+  },
+  "billing_event": {
+    "message": {
+      "token": "FCM_DEVICE_TOKEN",
+      "data": {
+        "type": "billing",
+        "title": "Subscription payment received",
+        "body": "Your Pro plan renewed successfully",
+        "screen": "Subscription"
+      },
+      "android": {
+        "priority": "high"
+      }
+    }
+  }
+}
